@@ -53,3 +53,4 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1 }}
           package: .
 
+
