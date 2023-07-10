@@ -52,5 +52,6 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
           package: './bin/Release/net7.0/publish'
+          kudu-app-url: ${{ secrets.KUDU_URL }}
 
 
