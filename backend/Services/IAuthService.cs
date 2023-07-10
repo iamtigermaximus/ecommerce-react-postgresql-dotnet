@@ -11,4 +11,3 @@ public interface IAuthService
 {
     Task<ServiceResponse<AuthUserRespDTO>> Login(AuthUserReqDTO request);
 }
-

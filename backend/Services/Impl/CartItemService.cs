@@ -74,27 +74,6 @@ public class CartItemService : ICartItemService
         return serviceResponse;
     }
 
-    //public async Task<ServiceResponse<List<AddCartItemDTO>>> AddCartItem(CartItemDTO newItem)
-    //{
-    //    var serviceResponse = new ServiceResponse<List<AddCartItemDTO>>();
-    //    try
-    //    {
-    //        var item = _mapper.Map<CartItem>(newItem);
-
-    //        _context.CartItems.Add(item);
-    //        await _context.SaveChangesAsync();
-
-    //        serviceResponse.Data = await _context.Carts
-    //                .Select(ci => _mapper.Map<AddCartItemDTO>(ci))
-    //                .ToListAsync();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        serviceResponse.Success = false;
-    //        serviceResponse.Message = ex.Message;
-    //    }
-    //    return serviceResponse;
-    //}
 
     public async Task<ServiceResponse<List<AddCartItemDTO>>> AddCartItem(int userId, int productId)
     {
