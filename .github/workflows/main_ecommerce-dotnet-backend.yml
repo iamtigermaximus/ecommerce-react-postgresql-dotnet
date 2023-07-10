@@ -50,8 +50,7 @@ jobs:
         with:
           app-name: 'ecommerce-backend2'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
-          package: './bin/Release/net7.0/publish'
-          kudu-app-url: ${{ secrets.KUDU_URL }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1 }}
+          package: .
 
 
