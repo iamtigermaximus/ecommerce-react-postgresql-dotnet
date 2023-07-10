@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - ecommerce-dotnet-backend
+name: Build and deploy ASP.Net Core app to Azure Web App - ecommerce-backend2
 
 on:
   push:
@@ -50,6 +50,7 @@ jobs:
         with:
           app-name: 'ecommerce-backend2'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
-          package: './bin/Release/net7.0/publish'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1 }}
+          package: .
+
 
