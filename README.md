@@ -39,7 +39,7 @@
 - .NET
 - Entity Framework 7
 - PostgreSQL
-- [Swagger UI](https://ecommerce-postgresql-backend.azurewebsites.net/swagger/index.html)
+- [Swagger UI](https://ecommerce-backend2.azurewebsites.net/swagger/index.html)
 
 ## Dependencies
 
