@@ -50,11 +50,7 @@ namespace backend.Services.Impl
                 var token = GenerateToken(dbUser);
                 var authResponse = new AuthUserRespDTO
                 {
-                    Token = token,
-                    Name = dbUser.Name,
-                    Email = dbUser.Email,
-                    Password = dbUser.Password,
-                    Initials = dbUser.Initials
+                    Token = token
                 };
                 serviceResponse.Data = authResponse;
             }
