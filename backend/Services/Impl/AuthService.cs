@@ -52,7 +52,14 @@ public class AuthService : IAuthService
             }
            
             string token = CreateToken(dbUser);
-            var authResponse = new AuthUserRespDTO { Token = token };
+            var authResponse = new AuthUserRespDTO 
+            { 
+                Token = token ,
+                Name = dbUser.Name,
+                Email = dbUser.Email,
+                Password = dbUser.Password,
+                Initials = dbUser.Initials
+            };
             serviceResponse.Data = authResponse;
         }
         catch (Exception ex)
