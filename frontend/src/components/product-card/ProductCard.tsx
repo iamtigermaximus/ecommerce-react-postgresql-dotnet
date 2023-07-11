@@ -21,6 +21,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <ProdCard key={product.id}>
       <CardImageContainer onClick={() => navigate(`/category/${product.name}`)}>
+        {/* <CardMedia component="img" height="200" image={product.image} /> */}
         <LazyLoadImage
           effect="blur"
           src={product.image}
