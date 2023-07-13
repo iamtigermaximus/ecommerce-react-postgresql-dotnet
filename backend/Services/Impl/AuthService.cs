@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using backend.Data;
 using backend.DTOs.Auth;
 using backend.DTOs.User;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using BCrypt;
 
 namespace backend.Services.Impl
 {
@@ -50,7 +50,12 @@ namespace backend.Services.Impl
                 var token = GenerateToken(dbUser);
                 var authResponse = new AuthUserRespDTO
                 {
-                    Token = token
+                    Token = token,
+                    UserId = dbUser.Id,
+                    Name = dbUser.Name,
+                    Email = dbUser.Email,
+                    Initials = dbUser.Initials
+
                 };
                 serviceResponse.Data = authResponse;
             }
