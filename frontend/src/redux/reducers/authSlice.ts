@@ -1,19 +1,43 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
-import {
-  AuthCreds,
-  IAuthState,
-  IUserRegister,
-  ReturnedAuthCreds,
-  User,
-} from '../../types/auth';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../redux/store';
+import { AxiosError } from 'axios';
 import axiosInstance from '../../common/axiosInstance';
+import { IUserRegister } from '../../types/auth';
+
+export interface AuthCreds {
+  email: string;
+  password: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  initials: string;
+  token: string;
+  cart: [];
+}
+
+export interface AuthState {
+  loggedIn: boolean;
+  userInfo: User | null;
+  error: boolean;
+  errorMsg: string;
+  isRegistered: boolean;
+}
+
+const initialState: AuthState = {
+  loggedIn: false,
+  userInfo: null,
+  error: false,
+  errorMsg: '',
+  isRegistered: false,
+};
+
 export const registerUser = createAsyncThunk(
   'registerUser',
   async (user: IUserRegister) => {
     try {
-      // Generate initials from the user's name
       const initials = user.name
         .split(' ')
         .map((name) => name[0].toUpperCase())
@@ -33,76 +57,91 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async (credentials: AuthCreds) => {
-    try {
-      const response = await axiosInstance.post('/Auths', credentials);
-      const authData: ReturnedAuthCreds = response.data;
-      if ('access_token' in authData && authData.access_token.length) {
-        const headerConfig = {
-          headers: {
-            Authorization: `Bearer ${authData.access_token}`,
-          },
-        };
-        const userResponse = await axiosInstance.get('/Users', headerConfig);
-        const userData: User = userResponse.data;
-        return userData;
-      } else {
-        throw new Error('Authentication failed'); // Change: Throw an error if authentication fails or access token is missing
-      }
-    } catch (e) {
-      const error = e as AxiosError;
-      let errorMsg = 'Something went wrong.';
-      if (error.response?.status === 401) {
-        errorMsg = 'Email or Password are incorrect';
-      }
-      return {
-        error: true,
-        errorMsg,
+export const loginUser = createAsyncThunk<
+  User,
+  AuthCreds,
+  { rejectValue: { error: boolean; errorMsg: string } }
+>('auth/loginUser', async (credentials, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post<any>('/Auths', credentials);
+    const { data, success, message } = response.data;
+
+    if (success) {
+      const { token, userId, name, email, initials } = data;
+
+      const user: User = {
+        id: userId.toString(),
+        name,
+        email,
+        initials,
+        token,
+        cart: [],
       };
+
+      return user;
+    } else {
+      throw new Error(message || 'Authentication failed');
     }
+  } catch (error: any) {
+    return rejectWithValue({
+      error: true,
+      errorMsg: error.message || 'Authentication failed',
+    });
   }
-);
+});
 
-const initialState: IAuthState = {
-  loggedIn: false,
-  userInfo: null,
-  error: false,
-  errorMsg: '',
-  isRegistered: false,
-};
-
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
-    reset: () => initialState,
     setRegistered: (state) => {
       state.isRegistered = true;
     },
-  },
-  extraReducers(builder) {
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      const userData = action.payload as User;
+    loginSuccess: (state, action: PayloadAction<User>) => {
       state.loggedIn = true;
-      state.userInfo = userData;
+      state.userInfo = action.payload;
+      state.error = false;
+      state.errorMsg = '';
       state.isRegistered = true;
+    },
+    loginFailure: (state, action: PayloadAction<string>) => {
+      state.loggedIn = false;
+      state.userInfo = null;
+      state.error = true;
+      state.errorMsg = action.payload;
+      state.isRegistered = false;
+    },
+    logout: (state) => {
+      state.loggedIn = false;
+      state.userInfo = null;
+      state.error = false;
+      state.errorMsg = '';
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.loggedIn = true;
+      state.userInfo = action.payload;
       state.error = false;
       state.errorMsg = '';
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.loggedIn = false;
-      state.userInfo = null;
-      state.isRegistered = false;
-      state.error = true;
-      state.errorMsg = action.error.message || 'Login failed';
+      if (action.payload) {
+        state.error = action.payload.error;
+        state.errorMsg = action.payload.errorMsg;
+      } else {
+        state.error = true;
+        state.errorMsg = 'An error occurred during login';
+      }
     });
   },
 });
 
-export const { reset, setRegistered } = authSlice.actions;
-const authReducer = authSlice.reducer;
-export default authReducer;
+export const { loginSuccess, loginFailure, logout, setRegistered } =
+  authSlice.actions;
+export const selectLoggedIn = (state: RootState) => state.auth.loggedIn;
+export const selectUser = (state: RootState) => state.auth.userInfo;
+export const selectError = (state: RootState) => state.auth.error;
+export const selectErrorMessage = (state: RootState) => state.auth.errorMsg;
 
-export const selectAuthError = (state: RootState) => state.auth.error;
+export default authSlice.reducer;

@@ -21,6 +21,8 @@ import Typography from '@mui/material/Typography';
 import { ChangeEvent, useState } from 'react';
 import { Product } from '../../types/product';
 import SearchResults from '../search/SearchResults';
+import Avatar from '@mui/material/Avatar';
+import { deepOrange } from '@mui/material/colors';
 
 const Search = styled('form')(({ theme }) => ({
   position: 'relative',
@@ -175,7 +177,15 @@ const Navbar = () => {
                 }}
               >
                 <CartLink to="/profile">
-                  <h6> fix this</h6>
+                  <Avatar
+                    sx={{
+                      bgcolor: deepOrange[400],
+                      width: 35,
+                      height: 35,
+                    }}
+                  >
+                    <h4>{authInfo.userInfo?.initials}</h4>
+                  </Avatar>
                 </CartLink>
               </Box>
             ) : (
