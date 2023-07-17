@@ -42,6 +42,7 @@ const Cart = () => {
         <Box
           sx={{
             width: '100%',
+            height: '100vh',
             display: 'flex',
             justifyContent: 'center',
             my: 4,
@@ -51,7 +52,15 @@ const Cart = () => {
         </Box>
       ) : (
         <Container>
-          <Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              my: 4,
+            }}
+          >
             {cartItems.map((item) => {
               return (
                 <CartItemContainer key={item.id}>

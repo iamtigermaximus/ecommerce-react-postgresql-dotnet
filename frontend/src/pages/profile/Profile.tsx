@@ -2,11 +2,17 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
-import { LoginContainer } from '../user-forms/login/Login.styles';
 import { logout } from '../../redux/reducers/authSlice';
 
 export const PageContainer = styled(Container)`
-  height: 100vh;
+  height: 100%;
+`;
+
+export const UserInfoContainer = styled(Container)`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 const Profile = () => {
   const authInfo = useAppSelector((state) => state.auth);
@@ -15,10 +21,10 @@ const Profile = () => {
 
   return (
     <PageContainer>
-      <LoginContainer>
+      <UserInfoContainer>
         <Box
           sx={{
-            width: '100%',
+            width: '500px',
             display: 'flex',
             justifyContent: 'center',
             mb: 2,
@@ -45,11 +51,12 @@ const Profile = () => {
                 maxWidth="lg"
                 key={authInfo.userInfo?.id}
                 sx={{
-                  width: '500px',
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  mb: 2,
+                  mb: 1,
+                  p: 1,
                 }}
               >
                 <TextField
@@ -96,7 +103,7 @@ const Profile = () => {
             ''
           )}
         </Box>
-      </LoginContainer>
+      </UserInfoContainer>
     </PageContainer>
   );
 };
