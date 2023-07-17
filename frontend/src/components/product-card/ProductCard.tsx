@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProductCardProps } from '../../types/product';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch();
@@ -28,26 +29,34 @@ const ProductCard = ({ product }: ProductCardProps) => {
           alt={product.name}
           height={200}
         />
+
         <Box
           sx={{
             position: 'absolute',
-            color: 'white',
             top: 3,
-            padding: '2px 5px',
-            background: '#32CD32',
             display: 'flex',
-            justifyContent: 'center',
-            borderRadius: '50px',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            zIndex: 2,
           }}
         >
           <Typography
             sx={{
               fontSize: '10px',
               textTransform: 'uppercase',
+              color: 'white',
+              padding: '2px 5px',
+              background: '#32CD32',
+              display: 'flex',
+              borderRadius: '50px',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             {product.categoryName}
           </Typography>
+          <FavoriteBorderOutlinedIcon sx={{ color: 'black' }} />
         </Box>
       </CardImageContainer>
 
