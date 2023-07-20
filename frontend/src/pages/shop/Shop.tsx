@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Box, Pagination } from '@mui/material';
+import { Box, Pagination, CircularProgress } from '@mui/material';
 import {
   PageContainer,
   CardsWrapper,
@@ -14,11 +14,14 @@ import ProductCard from '../../components/product-card/ProductCard';
 const Shop = () => {
   const products = useAppSelector((state) => state.productReducer);
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
+    dispatch(fetchAllProducts())
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false));
   }, [dispatch]);
 
   // Calculate the current page's range of products
@@ -32,33 +35,39 @@ const Shop = () => {
   };
   return (
     <PageContainer>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: '10px 20px',
-        }}
-      >
-        <CategoryLists />
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flexEnd',
-          alignItems: 'center',
-          margin: '0 20px 5px',
-        }}
-      >
-        <DropdownOption />
-      </Box>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: '10px 20px',
+            }}
+          >
+            <CategoryLists />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flexEnd',
+              alignItems: 'center',
+              margin: '0 20px 5px',
+            }}
+          >
+            <DropdownOption />
+          </Box>
+          <CardsWrapper>
+            {currentProducts.length > 0 &&
+              currentProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+          </CardsWrapper>
+        </>
+      )}
 
-      <CardsWrapper>
-        {currentProducts.length > 0 &&
-          currentProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-      </CardsWrapper>
       <PaginationContainer>
         <Pagination
           count={Math.ceil(products.length / itemsPerPage)}

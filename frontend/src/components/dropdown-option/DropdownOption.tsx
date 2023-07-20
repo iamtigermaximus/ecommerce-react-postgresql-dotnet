@@ -24,15 +24,19 @@ export default function FadeMenu() {
   const dispatch = useAppDispatch();
   const highestFirst = () => {
     dispatch(highestPriceFirst());
+    handleClose();
   };
   const lowestFirst = () => {
     dispatch(lowestPriceFirst());
+    handleClose();
   };
   const alphabetAz = () => {
     dispatch(alphabetical2());
+    handleClose();
   };
   const alphabetZa = () => {
     dispatch(alphabetical());
+    handleClose();
   };
 
   return (
