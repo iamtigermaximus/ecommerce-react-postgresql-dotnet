@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartState } from '../../types/cart';
+import { CartState, ICartProducts } from '../../types/cart';
 import { Product } from '../../types/product';
 
 const initialState: CartState = {
@@ -20,6 +20,7 @@ const cartSlice = createSlice({
           ...state.cartItems[existingIndex],
           itemQuantity: state.cartItems[existingIndex].itemQuantity + 1,
         };
+        localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
       } else {
         let tempProductItem = {
           ...action.payload,
@@ -30,6 +31,7 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
+      localStorage.setItem('cartItems', '[]');
     },
     removeItem: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
@@ -49,9 +51,12 @@ const cartSlice = createSlice({
         state.cartItems = nextCartItems;
       }
     },
+    loadCart: (state, action: PayloadAction<ICartProducts[]>) => {
+      state.cartItems = action.payload;
+    },
   },
 });
 const cartReducer = cartSlice.reducer;
-export const { addToCart, removeItem, decrementQuantity, clearCart } =
+export const { addToCart, removeItem, decrementQuantity, clearCart, loadCart } =
   cartSlice.actions;
 export default cartReducer;

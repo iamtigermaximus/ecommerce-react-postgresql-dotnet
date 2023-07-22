@@ -19,6 +19,11 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <PageContainer>
       <UserInfoContainer>
@@ -93,7 +98,7 @@ const Profile = () => {
                 <Button
                   variant="contained"
                   color="warning"
-                  onClick={() => dispatch(logout(navigate('/')))}
+                  onClick={handleLogout}
                 >
                   log out
                 </Button>

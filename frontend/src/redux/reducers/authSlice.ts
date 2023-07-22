@@ -24,6 +24,7 @@ export interface AuthState {
   error: boolean;
   errorMsg: string;
   isRegistered: boolean;
+  userCartItems: [];
 }
 
 const initialState: AuthState = {
@@ -32,6 +33,7 @@ const initialState: AuthState = {
   error: false,
   errorMsg: '',
   isRegistered: false,
+  userCartItems: [],
 };
 
 export const registerUser = createAsyncThunk(
@@ -103,6 +105,14 @@ const authSlice = createSlice({
       state.error = false;
       state.errorMsg = '';
       state.isRegistered = true;
+
+      if (state.loggedIn) {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        state.userCartItems = cartItems;
+      } else {
+        // Clear the cart items from Redux store if the user is not logged in
+        state.userCartItems = [];
+      }
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loggedIn = false;
@@ -110,12 +120,14 @@ const authSlice = createSlice({
       state.error = true;
       state.errorMsg = action.payload;
       state.isRegistered = false;
+      state.userCartItems = [];
     },
     logout: (state) => {
       state.loggedIn = false;
       state.userInfo = null;
       state.error = false;
       state.errorMsg = '';
+      state.userCartItems = [];
     },
   },
   extraReducers: (builder) => {

@@ -15,14 +15,15 @@ import {
   BrandLink,
   CartLink,
 } from './Navbar.styles';
-import { useAppSelector } from '../../hooks/reduxHook';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import { RootState } from '../../redux/store';
 import Typography from '@mui/material/Typography';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Product } from '../../types/product';
 import SearchResults from '../search/SearchResults';
 import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors';
+import { addToCart } from '../../redux/reducers/cartSlice';
 
 const Search = styled('form')(({ theme }) => ({
   position: 'relative',
@@ -63,6 +64,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Navbar = () => {
   const { cartItems } = useAppSelector((state: RootState) => state.cartReducer);
   const authInfo = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+  const loggedIn = useAppSelector((state) => state.auth.loggedIn);
+
   //const userInfo = useAppSelector((state) => state.auth);
   const [searchTerm, setSearchTerm] = useState('');
   const products = useAppSelector((state) => state.productReducer);
@@ -99,13 +104,20 @@ const Navbar = () => {
     setShowSearchResults(false); // Hide search results when an item is clicked
     setSearchTerm(''); //clear input field
   };
-
-  const getItemsCount = () => {
+  const getItemsCount = useCallback(() => {
     return cartItems.reduce(
       (accumulator, item) => accumulator + item.itemQuantity,
       0
     );
-  };
+  }, [cartItems]);
+
+  useEffect(() => {
+    setCartItemsCount(getItemsCount());
+    if (authInfo.loggedIn && authInfo.userInfo) {
+      authInfo.userInfo.cart.forEach((item) => dispatch(addToCart(item)));
+    }
+  }, [authInfo.loggedIn, authInfo.userInfo, dispatch, getItemsCount]);
+
   return (
     <>
       <NavigationBar position="static">
@@ -162,12 +174,21 @@ const Navbar = () => {
               </Badge>
             </IconButton>
             <IconButton size="large" color="inherit">
-              <Badge badgeContent={getItemsCount() || '0'} color="error">
-                <CartLink to="/cart">
-                  <ShoppingCartOutlinedIcon />
-                </CartLink>
-              </Badge>
+              {loggedIn ? (
+                <Badge badgeContent={getItemsCount() || '0'} color="error">
+                  <CartLink to="/cart">
+                    <ShoppingCartOutlinedIcon />
+                  </CartLink>
+                </Badge>
+              ) : (
+                <Badge badgeContent={cartItemsCount || '0'} color="error">
+                  <CartLink to="/cart">
+                    <ShoppingCartOutlinedIcon />
+                  </CartLink>
+                </Badge>
+              )}
             </IconButton>
+
             {authInfo.loggedIn ? (
               <Box
                 sx={{

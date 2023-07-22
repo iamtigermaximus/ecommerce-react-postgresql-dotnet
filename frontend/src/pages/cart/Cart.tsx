@@ -18,7 +18,13 @@ import {
   clearCart,
   decrementQuantity,
   addToCart,
+  loadCart,
 } from '../../redux/reducers/cartSlice';
+import { useEffect } from 'react';
+import {
+  loadCartFromLocalStorage,
+  saveCartToLocalStorage,
+} from '../../helpers/localStorage';
 
 const Cart = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +36,19 @@ const Cart = () => {
       0
     );
   };
+
+  useEffect(() => {
+    // Load cart items from local storage when the component mounts
+    const loadedCartItems = loadCartFromLocalStorage();
+    if (loadedCartItems.length > 0) {
+      // Dispatch an action to update the Redux store with the loaded cart items
+      dispatch(loadCart(loadedCartItems));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    saveCartToLocalStorage(cartItems);
+  }, [cartItems]);
 
   return (
     <PageContainer>

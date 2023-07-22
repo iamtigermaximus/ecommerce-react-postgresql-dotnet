@@ -9,3 +9,7 @@ export interface ICartProducts extends Product {
 export interface CartState {
   cartItems: ICartProducts[];
 }
+
+export interface CartItem extends Product {
+  itemQuantity: number;
+}
