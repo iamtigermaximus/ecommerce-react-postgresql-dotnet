@@ -1,16 +1,22 @@
 import { Box, Typography, TextField } from '@mui/material';
 import {
+  NewsletterBody,
   NewsletterContainer,
   NewsletterContent,
   NewsletterForm,
+  NewsletterHead,
   SubscribeButton,
 } from './NewsletterSection.styles';
 
 const NewsletterSection = () => {
   return (
     <NewsletterContainer maxWidth={false}>
-      <NewsletterContent>
-        <Typography
+      <NewsletterContent
+        sx={{
+          p: 1,
+        }}
+      >
+        <NewsletterHead
           variant="h5"
           gutterBottom
           sx={{
@@ -18,13 +24,17 @@ const NewsletterSection = () => {
           }}
         >
           Subscribe to our Newsletter
-        </Typography>
-        <Typography variant="body1" gutterBottom>
+        </NewsletterHead>
+        <NewsletterBody variant="body1" gutterBottom>
           Subscribe now and get 10% off of one order. Be among the first to hear
           about benefits, offers and events.
-        </Typography>
+        </NewsletterBody>
       </NewsletterContent>
-      <NewsletterForm>
+      <NewsletterForm
+        sx={{
+          p: 1,
+        }}
+      >
         <Box
           sx={{
             width: 500,

@@ -1,4 +1,4 @@
-import { Container, Box, Button } from '@mui/material';
+import { Container, Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { breakpoints as bp } from '../../../utils/layout';
 
@@ -43,8 +43,31 @@ export const SubscribeButton = styled(Button)`
   width: 100%;
   background-color: orange;
   color: black;
+  font-size: 10px;
 
   &:hover {
     background-color: transparent;
+  }
+  @media (min-width: ${bp.md}) {
+    font-size: 15px;
+  }
+`;
+
+export const NewsletterHead = styled(Typography)`
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 10px;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 18px;
+  }
+`;
+
+export const NewsletterBody = styled(Typography)`
+  font-size: 12px;
+  padding: 0 10px;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 15px;
   }
 `;
