@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using backend.Services;
 using backend.DTOs.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers;
 
@@ -37,12 +38,14 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<List<AddProductDTO>>>> AddProduct(GetProductDTO newProduct)
     {
         return Ok(await _productService.AddProduct(newProduct));
     }
 
     [HttpPut()]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<List<GetProductDTO>>>> UpdateProduct(UpdateProductDTO updatedProduct)
     {
         var response = await _productService.UpdateProduct(updatedProduct);
@@ -55,6 +58,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<GetProductDTO>>> DeleteProduct(int id)
     {
         var response = await _productService.DeleteProduct(id);

@@ -3,6 +3,7 @@ using backend.Models;
 using backend.DTOs.Category;
 using backend.Services;
 using backend.DTOs.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers;
 
@@ -31,12 +32,14 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<List<AddCategoryDTO>>>> AddCategory(GetCategoryDTO newCategory)
     {
         return Ok(await _categoryService.AddCategory(newCategory));
     }
 
     [HttpPut()]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<List<GetCategoryDTO>>>> UpdateProduct(UpdateCategoryDTO updatedCategory)
     {
         var response = await _categoryService.UpdateCategory(updatedCategory);
@@ -49,6 +52,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ServiceResponse<GetCategoryDTO>>> DeleteCategory(int id)
     {
         var response = await _categoryService.DeleteCategory(id);
