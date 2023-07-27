@@ -36,7 +36,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy-to-zip.outputs.webapp-url  }}
 
     steps:
       - name: Download artifact from build job
@@ -45,32 +45,10 @@ jobs:
           name: .net-app
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'ecommerce-backend2'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1 }}
-          package: .
-
-deploy_zip:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-zip.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App using Zip Deploy
         id: deploy-to-zip
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'ecommerce-backend2'
           slot-name: 'Production'
-          publish-profile: ${{secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3  }}
-          package: ./${{env.DOTNET_ROOT}}/myapp
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3 }}
+          package: .
