@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using backend.Data;
 using backend.DTOs.User;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using BCrypt;
 namespace backend.Services;
 public class UserService : IUserService
 
