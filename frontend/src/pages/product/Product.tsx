@@ -10,7 +10,7 @@ import {
   ProductDetailsContainer,
   SingleProductContainer,
 } from './Product.styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Product = () => {
   const products = useAppSelector((state) => state.productReducer);
@@ -23,6 +23,10 @@ const Product = () => {
     dispatch(addToCart(item));
     setButtonClicked(true);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <PageContainer>
       <Tab label="BACK" onClick={() => navigate(-1)} />
