@@ -14,14 +14,36 @@ import { ProductCardProps } from '../../types/product';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from '../../redux/reducers/favoriteSlice';
+import { useState } from 'react';
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleAddToFavorites = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (isFavorite) {
+      dispatch(removeFromFavorites(product.id));
+    } else {
+      dispatch(addToFavorites(product));
+    }
+
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+  };
+
+  const handleImageClick = () => {
+    navigate(`/category/${product.name}`);
+  };
 
   return (
     <ProdCard key={product.id}>
-      <CardImageContainer onClick={() => navigate(`/category/${product.name}`)}>
+      <CardImageContainer onClick={handleImageClick}>
         {/* <CardMedia component="img" height="200" image={product.image} /> */}
         <LazyLoadImage
           effect="blur"
@@ -56,7 +78,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
           >
             {product.categoryName}
           </Typography>
-          <FavoriteBorderOutlinedIcon sx={{ color: 'black' }} />
+          <Box onClick={handleAddToFavorites}>
+            {isFavorite ? (
+              <FavoriteOutlinedIcon sx={{ color: 'red', cursor: 'pointer' }} />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                sx={{ color: 'black', cursor: 'pointer' }}
+              />
+            )}
+          </Box>
         </Box>
       </CardImageContainer>
 

@@ -63,6 +63,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const { cartItems } = useAppSelector((state: RootState) => state.cartReducer);
+  const { favoriteItems } = useAppSelector(
+    (state: RootState) => state.favoriteReducer
+  );
   const authInfo = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [cartItemsCount, setCartItemsCount] = useState(0);
@@ -110,6 +113,10 @@ const Navbar = () => {
       0
     );
   }, [cartItems]);
+
+  const getFavoriteItemsCount = () => {
+    return favoriteItems.length;
+  };
 
   useEffect(() => {
     setCartItemsCount(getItemsCount());
@@ -167,8 +174,11 @@ const Navbar = () => {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={'0'} color="error">
-                <CartLink to="/">
+              <Badge
+                badgeContent={getFavoriteItemsCount() || '0'}
+                color="error"
+              >
+                <CartLink to="/favorite">
                   <FavoriteBorderIcon />
                 </CartLink>
               </Badge>

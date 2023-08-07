@@ -12,6 +12,7 @@ import Category from './pages/category/Category';
 import Footer from './components/footer/Footer';
 import Register from './pages/user-forms/register/Register';
 import Login from './pages/user-forms/login/Login';
+import Favorite from './pages/favorite/Favorite';
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/favorite" element={<Favorite />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -23,5 +23,6 @@ export interface ProductCardProps {
     categoryName: string;
     name: string;
     price: number;
+    description: string;
   };
 }

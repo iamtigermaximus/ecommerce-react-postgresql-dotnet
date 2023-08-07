@@ -11,6 +11,7 @@ import userReducer from './reducers/userSlice';
 import authReducer from './reducers/authSlice';
 import storage from 'redux-persist/es/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import favoriteReducer from './reducers/favoriteSlice';
 
 // Combine your reducers
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   cartReducer,
   categoryReducer,
   userReducer,
+  favoriteReducer,
   auth: authReducer,
 });
 
