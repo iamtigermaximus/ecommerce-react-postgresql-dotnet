@@ -65,20 +65,34 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           <Typography
             sx={{
-              fontSize: '10px',
+              fontSize: '8px',
               textTransform: 'uppercase',
               color: 'white',
-              padding: '2px 5px',
+              padding: '2px',
               background: '#32CD32',
+              width: '100px',
+              height: '20px',
+
               display: 'flex',
-              borderRadius: '50px',
+              borderRadius: '10px',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             {product.categoryName}
           </Typography>
-          <Box onClick={handleAddToFavorites}>
+          <Box
+            onClick={handleAddToFavorites}
+            sx={{
+              fontSize: '8px',
+              padding: '2px',
+              height: '20px',
+              display: 'flex',
+              borderRadius: '10px',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             {isFavorite ? (
               <FavoriteOutlinedIcon sx={{ color: 'red', cursor: 'pointer' }} />
             ) : (
