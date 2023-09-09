@@ -47,7 +47,7 @@ This repository contains the code for an Ecommerce Webstore with a frontend buil
 <img width="650" alt="Screenshot 2023-01-11 at 16 19 48" src="https://user-images.githubusercontent.com/46716968/211834776-f299e310-c555-4282-ad04-b161852911e2.png">
 <img width="646" alt="Screenshot 2023-01-11 at 16 20 59" src="https://user-images.githubusercontent.com/46716968/211834781-57672b41-d231-4c3f-b3d5-e17a7e02408e.png">
 
-## Backend <a name="backend-technologies"></a> 
+## Backend <a name="backend-technologies"></a> # BACKEND NOT DEPLOYED IN AZURE ANYMORE
 
 - .NET
 - Entity Framework 7
